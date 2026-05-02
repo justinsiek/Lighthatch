@@ -41,7 +41,7 @@ const professionals = [
 export default function Page() {
   return (
     <main>
-      <section className="relative bg-black text-white bg-cover bg-[center_10%]" style={{ backgroundImage: "url('/pexels-kelly-37143582.jpg')" }}>
+      <section className="relative bg-black text-white bg-cover bg-[center_5%]" style={{ backgroundImage: "url('/pexels-kelly-37143582.jpg')" }}>
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
         <nav className="relative flex items-center justify-between px-18 py-6">
           <div className={`${jakarta.className} text-2xl font-light tracking-tighter`}>Lighthatch</div>
@@ -66,11 +66,10 @@ export default function Page() {
             Talk to people who know the work
           </p>
           <h1 className={`${jakarta.className} mt-6 font-light text-6xl tracking-tight leading-[1.05]`}>
-            Open a window into any industry before you build.
+            Don’t guess what an industry needs. Talk to the people doing the work.
           </h1>
           <p className="mt-6 max-w-xl text-lg font-light text-zinc-300">
-            Browse professionals with real industry experience, see what they
-            know, and book short paid calls directly.
+            Browse professionals with firsthand experience and book short calls to understand workflows, pain points, and what's actually worth building.
           </p>
           <div className="mt-8 flex gap-3">
             <a
