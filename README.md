@@ -1,1 +1,1 @@
-# Lighthatch
+A marketplace for founders and builders to connect with industry professionals
