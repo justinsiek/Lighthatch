@@ -62,9 +62,6 @@ export default function Page() {
         </nav>
 
         <div className="relative px-18 pt-20 pb-32 max-w-4xl">
-          <p className="text-xs uppercase tracking-[0.25em] text-zinc-300">
-            Talk to people who know the work
-          </p>
           <h1 className={`${jakarta.className} mt-6 font-light text-6xl tracking-tight leading-[1.05]`}>
             Don’t guess what an industry needs. Talk to the people doing the work.
           </h1>
