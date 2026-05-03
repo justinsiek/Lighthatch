@@ -1,4 +1,5 @@
 import { Plus_Jakarta_Sans } from "next/font/google";
+import { Faq } from "./Faq";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -38,6 +39,29 @@ const professionals = [
   },
 ];
 
+const faqs = [
+  {
+    q: "How much does a call cost?",
+    a: "Each professional sets their own rate. Most calls range from $20 to $50 for 15 to 30 minutes.",
+  },
+  {
+    q: "Who are the professionals?",
+    a: "Real workers from the industry — dispatchers, restaurant operators, title officers, property managers, and more. Not consultants or expert-network gigs.",
+  },
+  {
+    q: "What if a professional doesn't accept my request?",
+    a: "You aren't charged. You can request another professional anytime, or message them with more context and try again.",
+  },
+  {
+    q: "How long are the calls?",
+    a: "Professionals choose their own durations. Most offer 15 or 30 minute calls.",
+  },
+  {
+    q: "When do I pay?",
+    a: "Payments aren't live yet. Once enabled, you'll be charged when your request is accepted by the professional.",
+  },
+];
+
 export default function Page() {
   return (
     <main>
@@ -48,7 +72,6 @@ export default function Page() {
           <div className="flex items-center gap-10 text-md text-zinc-300 text-sm">
             <a href="#" className="hover:text-white">Browse</a>
             <a href="#" className="hover:text-white">For Professionals</a>
-            <a href="#" className="hover:text-white">How it Works</a>
           </div>
           <div className="flex items-center gap-5">
             <a href="#" className="text-zinc-200 hover:text-white text-sm">Sign In</a>
@@ -119,9 +142,9 @@ export default function Page() {
         </div>
       </div>
 
-      <section className="bg-zinc-50 pt-24 pb-32">
+      <section className="bg-zinc-50 pt-20 pb-20">
         <div className="px-18 flex items-end justify-between mb-8">
-          <h2 className="text-2xl">Featured professionals</h2>
+          <h2 className={`${jakarta.className} text-3xl font-light tracking-tight text-center`}>Featured professionals</h2>
           <a href="#" className="text-sm text-zinc-700 hover:text-black">
             View all professionals →
           </a>
@@ -165,6 +188,69 @@ export default function Page() {
           ))}
         </div>
       </section>
+
+      <section className="bg-zinc-50 pb-20">
+        <div className="px-18 max-w-6xl mx-auto">
+          <h2 className={`${jakarta.className} text-3xl font-light tracking-tight text-center`}>Common questions</h2>
+          <div className="mt-10">
+            <Faq items={faqs} />
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-black text-white py-20">
+        <div className="px-18 text-center">
+          <h2 className={`${jakarta.className} text-5xl font-light tracking-tight leading-[1.05] max-w-3xl mx-auto`}>
+            Talk to people who know the work.
+          </h2>
+          <div className="mt-8 flex gap-3 justify-center">
+            <a
+              href="#"
+              className="rounded-sm bg-white px-6 py-3 font-sm text-black hover:bg-zinc-100"
+            >
+              Browse Professionals
+            </a>
+            <a
+              href="#"
+              className="rounded-sm border border-white px-6 py-3 font-sm text-white hover:bg-white/10"
+            >
+              Become a Professional
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <footer className="bg-black border-t border-zinc-800 text-zinc-400">
+        <div className="px-18 py-16 flex justify-between items-start">
+          <div>
+            <div className={`${jakarta.className} text-8xl text-white font-light tracking-tighter`}>Lighthatch</div>
+          </div>
+          <div className="flex gap-16 text-sm">
+            <div>
+              <div className="text-white mb-3 font-medium">Product</div>
+              <div className="flex flex-col gap-2">
+                <a href="#" className="hover:text-white">Browse</a>
+                <a href="#" className="hover:text-white">For Professionals</a>
+              </div>
+            </div>
+            <div>
+              <div className="text-white mb-3 font-medium">Company</div>
+              <div className="flex flex-col gap-2">
+                <a href="#" className="hover:text-white">About</a>
+                <a href="#" className="hover:text-white">Contact</a>
+                <a href="#" className="hover:text-white">Careers</a>
+              </div>
+            </div>
+            <div>
+              <div className="text-white mb-3 font-medium">Legal</div>
+              <div className="flex flex-col gap-2">
+                <a href="#" className="hover:text-white">Terms</a>
+                <a href="#" className="hover:text-white">Privacy</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
