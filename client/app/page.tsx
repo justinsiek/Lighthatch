@@ -75,13 +75,13 @@ export default function Page() {
             <Link href="/professionals" className="hover:text-white">Become A Professional</Link>
           </div>
           <div className="flex items-center gap-5">
-            <a href="#" className="text-zinc-200 hover:text-white text-sm">Sign In</a>
-            <a
-              href="#"
+            <Link href="/signin" className="text-zinc-200 hover:text-white text-sm">Sign In</Link>
+            <Link
+              href="/register"
               className="rounded-sm bg-white px-4 py-2 text-sm text-black hover:bg-zinc-100"
             >
               Join Now
-            </a>
+            </Link>
           </div>
         </nav>
 

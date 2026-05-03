@@ -137,19 +137,20 @@ export default function BrowsePage() {
       <nav className="border-b border-zinc-200 bg-white px-18 py-3 flex items-center justify-between">
         <div className="flex items-center gap-12">
           <Link href="/" className={`${jakarta.className} text-2xl font-light tracking-tighter`}>Lighthatch</Link>
-          <div className="flex items-center gap-8 text-sm">
+          <div className="flex items-center gap-8">
             <Link href="/browse" className="font-medium">Browse</Link>
-            <Link href="/professionals" className="text-zinc-600 hover:text-black">For Professionals</Link>
+            <Link href="/bookings" className="font-medium text-zinc-600 hover:text-black">Bookings</Link>
+            <Link href="/professionals" className="text-zinc-600 hover:text-black">Become A Professional</Link>
           </div>
         </div>
         <div className="flex items-center gap-5">
-          <a href="#" className="text-sm hover:text-zinc-600">Sign In</a>
-          <a
-            href="#"
+          <Link href="/signin" className="text-sm hover:text-zinc-600">Sign In</Link>
+          <Link
+            href="/register"
             className="rounded-sm bg-black px-4 py-2 text-sm text-white hover:bg-zinc-800"
           >
             Join Now
-          </a>
+          </Link>
         </div>
       </nav>
 
@@ -205,13 +206,13 @@ export default function BrowsePage() {
       </div>
 
       <section className="px-18 py-4">
-        <div className="grid grid-cols-5 gap-4">
+        <div className="grid grid-cols-5 gap-5">
           {pros.map((p) => (
             <div
               key={p.name}
-              className="bg-white rounded-sm border border-zinc-200 overflow-hidden flex flex-col"
+              className="bg-white rounded-lg border border-zinc-200 overflow-hidden flex flex-col"
             >
-              <div className="aspect-[16/9] bg-zinc-300" />
+              <div className="aspect-[4/3] bg-zinc-300" />
               <div className="p-4 flex flex-col gap-3">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex flex-col gap-1 min-w-0">
