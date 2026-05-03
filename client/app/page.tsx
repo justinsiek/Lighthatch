@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Faq } from "./Faq";
 
@@ -46,7 +47,7 @@ const faqs = [
   },
   {
     q: "Who are the professionals?",
-    a: "Real workers from the industry — dispatchers, restaurant operators, title officers, property managers, and more. Not consultants or expert-network gigs.",
+    a: "Real workers from the industry; dispatchers, restaurant operators, title officers, property managers, and more. Not consultants or expert-network gigs.",
   },
   {
     q: "What if a professional doesn't accept my request?",
@@ -70,8 +71,8 @@ export default function Page() {
         <nav className="relative flex items-center justify-between px-18 py-6">
           <div className={`${jakarta.className} text-2xl font-light tracking-tighter`}>Lighthatch</div>
           <div className="flex items-center gap-10 text-md text-zinc-300 text-sm">
-            <a href="#" className="hover:text-white">Browse</a>
-            <a href="#" className="hover:text-white">For Professionals</a>
+            <Link href="/browse" className="hover:text-white">Browse</Link>
+            <Link href="/professionals" className="hover:text-white">Become A Professional</Link>
           </div>
           <div className="flex items-center gap-5">
             <a href="#" className="text-zinc-200 hover:text-white text-sm">Sign In</a>
@@ -86,24 +87,24 @@ export default function Page() {
 
         <div className="relative px-18 pt-20 pb-32 max-w-4xl">
           <h1 className={`${jakarta.className} mt-6 font-light text-6xl tracking-tight leading-[1.05]`}>
-            Don’t guess what an industry needs. Talk to the people doing the work.
+            Don’t guess what an industry needs. Talk to the people who do the work.
           </h1>
           <p className="mt-6 max-w-xl text-lg font-light text-zinc-300">
             Browse professionals with firsthand experience and book short calls to understand workflows, pain points, and what's actually worth building.
           </p>
           <div className="mt-8 flex gap-3">
-            <a
-              href="#"
+            <Link
+              href="/browse"
               className="rounded-sm bg-white px-6 py-3 font-sm text-black hover:bg-zinc-100"
             >
               Browse Professionals
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              href="/professionals"
               className="rounded-sm border border-white px-6 py-3 font-sm text-white hover:bg-white/10"
             >
               Become a Professional
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -145,9 +146,9 @@ export default function Page() {
       <section className="bg-zinc-50 pt-20 pb-20">
         <div className="px-18 flex items-end justify-between mb-8">
           <h2 className={`${jakarta.className} text-3xl font-light tracking-tight text-center`}>Featured professionals</h2>
-          <a href="#" className="text-sm text-zinc-700 hover:text-black">
+          <Link href="/browse" className="text-sm text-zinc-700 hover:text-black">
             View all professionals →
-          </a>
+          </Link>
         </div>
         <div className="px-18 grid grid-cols-5 gap-5">
           {professionals.map((p) => (
@@ -201,21 +202,21 @@ export default function Page() {
       <section className="bg-black text-white py-20">
         <div className="px-18 text-center">
           <h2 className={`${jakarta.className} text-5xl font-light tracking-tight leading-[1.05] max-w-3xl mx-auto`}>
-            Talk to people who know the work.
+            Talk to people who do the work.
           </h2>
           <div className="mt-8 flex gap-3 justify-center">
-            <a
-              href="#"
+            <Link
+              href="/browse"
               className="rounded-sm bg-white px-6 py-3 font-sm text-black hover:bg-zinc-100"
             >
               Browse Professionals
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              href="/professionals"
               className="rounded-sm border border-white px-6 py-3 font-sm text-white hover:bg-white/10"
             >
               Become a Professional
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -229,8 +230,8 @@ export default function Page() {
             <div>
               <div className="text-white mb-3 font-medium">Product</div>
               <div className="flex flex-col gap-2">
-                <a href="#" className="hover:text-white">Browse</a>
-                <a href="#" className="hover:text-white">For Professionals</a>
+                <Link href="/browse" className="hover:text-white">Browse</Link>
+                <Link href="/professionals" className="hover:text-white">Become A Professional</Link>
               </div>
             </div>
             <div>
