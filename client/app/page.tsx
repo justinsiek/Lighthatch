@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Faq } from "./Faq";
+import { NavUser } from "./NavUser";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -74,15 +75,7 @@ export default function Page() {
             <Link href="/browse" className="hover:text-white">Browse</Link>
             <Link href="/professionals" className="hover:text-white">Become A Professional</Link>
           </div>
-          <div className="flex items-center gap-5">
-            <Link href="/signin" className="text-zinc-200 hover:text-white text-sm">Sign In</Link>
-            <Link
-              href="/register"
-              className="rounded-sm bg-white px-4 py-2 text-sm text-black hover:bg-zinc-100"
-            >
-              Join Now
-            </Link>
-          </div>
+          <NavUser variant="dark" />
         </nav>
 
         <div className="relative px-18 pt-20 pb-32 max-w-4xl">

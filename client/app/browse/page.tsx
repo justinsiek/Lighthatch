@@ -12,6 +12,7 @@ import {
   Star,
   BadgeCheck,
 } from "lucide-react";
+import { NavUser } from "../NavUser";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -143,15 +144,7 @@ export default function BrowsePage() {
             <Link href="/professionals" className="text-zinc-600 hover:text-black">Become A Professional</Link>
           </div>
         </div>
-        <div className="flex items-center gap-5">
-          <Link href="/signin" className="text-sm hover:text-zinc-600">Sign In</Link>
-          <Link
-            href="/register"
-            className="rounded-sm bg-black px-4 py-2 text-sm text-white hover:bg-zinc-800"
-          >
-            Join Now
-          </Link>
-        </div>
+        <NavUser />
       </nav>
 
       <section className="px-18 pt-6 pb-6 text-center">
@@ -182,7 +175,7 @@ export default function BrowsePage() {
         </div>
       </section>
 
-      <div className="border-y border-zinc-200 bg-white">
+      <div className="bg-white">
         <div className="px-18 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             {filters.map((f) => (
