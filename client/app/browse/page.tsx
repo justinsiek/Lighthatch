@@ -9,10 +9,33 @@ import {
   Wrench,
   Search,
   ChevronDown,
-  Star,
   BadgeCheck,
 } from "lucide-react";
 import { NavUser } from "../NavUser";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+
+type Professional = {
+  user_id: string;
+  name: string;
+  role: string;
+  industry: string;
+  bio: string;
+  rate_cents: number;
+  durations: number[];
+  photo_url: string | null;
+  linkedin_url: string | null;
+};
+
+async function getProfessionals(): Promise<Professional[]> {
+  try {
+    const res = await fetch(`${API_URL}/api/professionals`);
+    if (!res.ok) return [];
+    return res.json();
+  } catch {
+    return [];
+  }
+}
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -30,99 +53,6 @@ const industries = [
 
 const filters = ["Price", "Rating", "Availability", "Duration"];
 
-const pros = [
-  {
-    name: "Tyler J.",
-    role: "Freight Dispatcher",
-    industry: "Logistics",
-    price: 45,
-    rating: 4.9,
-    calls: 128,
-    bio: "7+ years dispatching freight across the U.S. I help carriers and owner-operators find better lanes, negotiate rates, and improve efficiency.",
-  },
-  {
-    name: "Maria S.",
-    role: "Title & Escrow Officer",
-    industry: "Real Estate",
-    price: 55,
-    rating: 4.9,
-    calls: 96,
-    bio: "10+ years in title & escrow. I help real estate professionals and homebuyers navigate closings, title issues, and compliance with confidence.",
-  },
-  {
-    name: "David L.",
-    role: "Restaurant Operator",
-    industry: "Hospitality",
-    price: 50,
-    rating: 4.8,
-    calls: 173,
-    bio: "I've opened and run multiple restaurants. I can help with operations, staffing, menu strategy, and increasing profitability.",
-  },
-  {
-    name: "Amanda P.",
-    role: "Property Manager",
-    industry: "Real Estate",
-    price: 45,
-    rating: 4.8,
-    calls: 101,
-    bio: "8+ years managing residential and multifamily properties. I share practical advice on leasing, tenant relations, and maximizing NOI.",
-  },
-  {
-    name: "James K.",
-    role: "Insurance Underwriter",
-    industry: "Insurance",
-    price: 60,
-    rating: 4.9,
-    calls: 89,
-    bio: "10+ years underwriting commercial policies. I help agents and businesses understand risk, coverage, and how to get approved.",
-  },
-  {
-    name: "Sophia R.",
-    role: "Logistics Coordinator",
-    industry: "Logistics",
-    price: 35,
-    rating: 4.7,
-    calls: 64,
-    bio: "Coordinating shipments and warehouses for 6 years. Happy to walk through routing, carriers, and fulfillment workflows.",
-  },
-  {
-    name: "Marcus T.",
-    role: "HVAC Technician",
-    industry: "Home Services",
-    price: 40,
-    rating: 4.9,
-    calls: 142,
-    bio: "12+ years installing and servicing HVAC systems. I can explain how the trade works, pricing, and what customers actually want.",
-  },
-  {
-    name: "Rachel B.",
-    role: "General Contractor",
-    industry: "Construction",
-    price: 65,
-    rating: 4.8,
-    calls: 77,
-    bio: "Run a residential GC business in the Midwest. Walking founders and PMs through subcontractor management, bidding, and timelines.",
-  },
-  {
-    name: "Daniel H.",
-    role: "Hotel Manager",
-    industry: "Hospitality",
-    price: 50,
-    rating: 4.7,
-    calls: 58,
-    bio: "Managed boutique and chain hotels for 9 years. Operations, revenue management, and front-of-house workflows.",
-  },
-  {
-    name: "Priya N.",
-    role: "Claims Adjuster",
-    industry: "Insurance",
-    price: 45,
-    rating: 4.8,
-    calls: 92,
-    bio: "Property and casualty claims for 7+ years. I can explain how claims actually flow through carriers.",
-  },
-];
-
 const industryIcons: Record<string, React.ReactNode> = {
   Logistics: <Truck className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
   "Real Estate": <Building2 className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
@@ -132,7 +62,8 @@ const industryIcons: Record<string, React.ReactNode> = {
   "Home Services": <Wrench className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
 };
 
-export default function BrowsePage() {
+export default async function BrowsePage() {
+  const pros = await getProfessionals();
   return (
     <main className="bg-white min-h-screen">
       <nav className="border-b border-zinc-200 bg-white px-18 py-3 flex items-center justify-between">
@@ -201,12 +132,13 @@ export default function BrowsePage() {
       <section className="px-18 py-4">
         <div className="grid grid-cols-5 gap-5">
           {pros.map((p) => (
-            <div
-              key={p.name}
-              className="bg-white rounded-lg border border-zinc-200 overflow-hidden flex flex-col"
+            <Link
+              key={p.user_id}
+              href="#"
+              className="bg-white rounded-lg border border-zinc-200 overflow-hidden flex flex-col hover:border-zinc-400 transition-colors"
             >
               <div className="aspect-[4/3] bg-zinc-300" />
-              <div className="p-4 flex flex-col gap-3">
+              <div className="p-4 flex flex-col gap-3 flex-1">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex flex-col gap-1 min-w-0">
                     <div className="flex items-center gap-1.5 min-w-0">
@@ -218,22 +150,14 @@ export default function BrowsePage() {
                   </div>
                   <div className="flex flex-col gap-1 items-end shrink-0 text-right">
                     <div className="text-sm">
-                      <span className="font-medium">${p.price}</span>
+                      <span className="font-medium">${(p.rate_cents / 100).toFixed(0)}</span>
                       <span className="text-zinc-500"> / call</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-xs">
-                      <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
-                      <span className="font-medium">{p.rating}</span>
-                      <span className="text-zinc-500">· {p.calls} calls</span>
                     </div>
                   </div>
                 </div>
-                <p className="text-sm text-zinc-600 leading-relaxed">{p.bio}</p>
-                <button className="border border-zinc-300 rounded-sm py-2 text-sm hover:bg-zinc-50 mt-auto">
-                  View profile
-                </button>
+                <p className="text-md text-zinc-600 leading-relaxed line-clamp-4">{p.bio}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
