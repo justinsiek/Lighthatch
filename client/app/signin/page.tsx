@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Plus_Jakarta_Sans } from "next/font/google";
 
@@ -12,8 +12,15 @@ const jakarta = Plus_Jakarta_Sans({
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
 
+function safeNext(next: string | null): string {
+  if (!next || !next.startsWith("/") || next.startsWith("//")) return "/browse";
+  return next;
+}
+
 export default function SignInPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = safeNext(searchParams.get("next"));
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +41,8 @@ export default function SignInPage() {
         setError(data.message ?? "Sign in failed");
         return;
       }
-      router.push("/browse");
+      router.push(next);
+      router.refresh();
     } catch {
       setError("Could not reach the server. Is it running?");
     } finally {
@@ -100,7 +108,10 @@ export default function SignInPage() {
 
           <p className="mt-6 text-xs text-zinc-600 text-center">
             Don&apos;t have an account?{" "}
-            <Link href="/register" className="text-black font-medium hover:underline">
+            <Link
+              href={`/register${next !== "/browse" ? `?next=${encodeURIComponent(next)}` : ""}`}
+              className="text-black font-medium hover:underline"
+            >
               Create one
             </Link>
           </p>

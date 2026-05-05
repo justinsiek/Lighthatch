@@ -21,11 +21,15 @@ type Professional = {
   role: string;
   industry: string;
   bio: string;
-  rate_cents: number;
-  durations: number[];
+  pricing: Record<string, number>;
   photo_url: string | null;
   linkedin_url: string | null;
 };
+
+function minPriceDollars(pricing: Record<string, number>): number {
+  const cents = Math.min(...Object.values(pricing));
+  return Math.round(cents / 100);
+}
 
 async function getProfessionals(): Promise<Professional[]> {
   try {
@@ -150,8 +154,8 @@ export default async function BrowsePage() {
                   </div>
                   <div className="flex flex-col gap-1 items-end shrink-0 text-right">
                     <div className="text-sm">
-                      <span className="font-medium">${(p.rate_cents / 100).toFixed(0)}</span>
-                      <span className="text-zinc-500"> / call</span>
+                      <span className="text-zinc-500 text-xs">from </span>
+                      <span className="font-medium">${minPriceDollars(p.pricing)}</span>
                     </div>
                   </div>
                 </div>
