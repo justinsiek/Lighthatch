@@ -23,6 +23,8 @@ import {
   Search,
   ChevronDown,
   BadgeCheck,
+  ArrowUpRight,
+  type LucideIcon,
 } from "lucide-react";
 import { Nav } from "../Nav";
 
@@ -83,59 +85,110 @@ const industries = [
 
 const filters = ["Price", "Rating", "Availability", "Duration"];
 
-const industryIcons: Record<string, React.ReactNode> = {
-  Logistics: <Truck className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  "Real Estate": <Building2 className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  Hospitality: <HandPlatter className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  Insurance: <ShieldCheck className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  Construction: <HardHat className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  "Home Services": <Wrench className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  Healthcare: <Stethoscope className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  Manufacturing: <Factory className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  Retail: <ShoppingBag className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  Finance: <Landmark className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  Accounting: <Calculator className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  Legal: <Scale className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  Education: <GraduationCap className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  Marketing: <Megaphone className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  Software: <Terminal className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  "Beauty & Wellness": <Sparkles className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  Automotive: <Car className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  Agriculture: <Sprout className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
-  Nonprofit: <HandHeart className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
+const industryIcons: Record<string, LucideIcon> = {
+  Logistics: Truck,
+  "Real Estate": Building2,
+  Hospitality: HandPlatter,
+  Insurance: ShieldCheck,
+  Construction: HardHat,
+  "Home Services": Wrench,
+  Healthcare: Stethoscope,
+  Manufacturing: Factory,
+  Retail: ShoppingBag,
+  Finance: Landmark,
+  Accounting: Calculator,
+  Legal: Scale,
+  Education: GraduationCap,
+  Marketing: Megaphone,
+  Software: Terminal,
+  "Beauty & Wellness": Sparkles,
+  Automotive: Car,
+  Agriculture: Sprout,
+  Nonprofit: HandHeart,
 };
 
-export default async function BrowsePage() {
-  const pros = await getProfessionals();
+export default async function BrowsePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ industry?: string; q?: string }>;
+}) {
+  const { industry: selectedIndustry, q } = await searchParams;
+  const query = (q ?? "").trim();
+  const queryLower = query.toLowerCase();
+  const allPros = await getProfessionals();
+  const pros = allPros.filter((p) => {
+    if (selectedIndustry && p.industry !== selectedIndustry) return false;
+    if (
+      query &&
+      !p.name.toLowerCase().includes(queryLower) &&
+      !p.role.toLowerCase().includes(queryLower) &&
+      !p.bio.toLowerCase().includes(queryLower)
+    ) {
+      return false;
+    }
+    return true;
+  });
   return (
     <main className="bg-white min-h-screen">
       <Nav />
 
       <section className="px-18 pt-6 pb-4 text-center">
         <h1 className={`${jakarta.className} text-3xl font-light tracking-tight`}>Browse professionals</h1>
-        <div className="mt-4 max-w-5xl mx-auto">
-          <div className="bg-white rounded-sm border border-zinc-200 flex items-center px-5 py-4">
-            <Search className="w-5 h-5 text-zinc-400" strokeWidth={1.75} />
-            <input
-              type="text"
-              placeholder="Search by role, industry, or keyword"
-              className="flex-1 ml-3 bg-transparent outline-none text-sm text-zinc-700 placeholder:text-zinc-400"
-            />
+        <form action="/browse" method="get" className="mt-4 max-w-5xl mx-auto">
+          {selectedIndustry && (
+            <input type="hidden" name="industry" value={selectedIndustry} />
+          )}
+          <div className="flex items-stretch h-14">
+            <div className="flex items-center flex-1 px-5 bg-white border border-zinc-200 border-r-0 rounded-l-sm">
+              <Search className="w-5 h-5 text-zinc-400" strokeWidth={1.75} />
+              <input
+                type="text"
+                name="q"
+                defaultValue={query}
+                placeholder="Search by role, industry, or keyword"
+                className="flex-1 ml-3 bg-transparent outline-none text-sm text-zinc-700 placeholder:text-zinc-400"
+              />
+            </div>
+            <button
+              type="submit"
+              aria-label="Search"
+              className="bg-black text-white flex items-center justify-center w-14 rounded-r-sm hover:bg-zinc-800 cursor-pointer"
+            >
+              <ArrowUpRight className="w-5 h-5" strokeWidth={2} />
+            </button>
           </div>
-        </div>
+        </form>
       </section>
 
       <section className="px-18 pb-4">
         <div className="max-w-[94rem] mx-auto flex justify-center gap-3 flex-wrap">
-          {industries.map((ind) => (
-            <button
-              key={ind}
-              className="border border-zinc-200 rounded-sm bg-white px-4 py-2 flex items-center gap-2.5 hover:border-zinc-400 cursor-pointer"
-            >
-              {industryIcons[ind]}
-              <span className="text-sm">{ind}</span>
-            </button>
-          ))}
+          {industries.map((ind) => {
+            const Icon = industryIcons[ind];
+            const active = selectedIndustry === ind;
+            const params = new URLSearchParams();
+            if (!active) params.set("industry", ind);
+            if (query) params.set("q", query);
+            const search = params.toString();
+            return (
+              <Link
+                key={ind}
+                href={search ? `/browse?${search}` : "/browse"}
+                className={`rounded-sm px-4 py-2 flex items-center gap-2.5 cursor-pointer border transition-colors ${
+                  active
+                    ? "bg-black border-black text-white"
+                    : "bg-white border-zinc-200 text-zinc-700 hover:border-zinc-400"
+                }`}
+              >
+                {Icon && (
+                  <Icon
+                    className={`w-5 h-5 ${active ? "text-white" : "text-zinc-700"}`}
+                    strokeWidth={1.75}
+                  />
+                )}
+                <span className="text-sm">{ind}</span>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
@@ -170,7 +223,7 @@ export default async function BrowsePage() {
               href="#"
               className="bg-white rounded-lg border border-zinc-200 overflow-hidden flex flex-col hover:border-zinc-400 transition-colors"
             >
-              <div className="aspect-[4/3] bg-zinc-300 overflow-hidden">
+              <div className="aspect-square bg-zinc-300 overflow-hidden">
                 {p.photo_url && (
                   <img
                     src={p.photo_url}
