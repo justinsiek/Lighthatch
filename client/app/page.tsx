@@ -2,44 +2,12 @@ import Link from "next/link";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Faq } from "./Faq";
 import { NavUser } from "./NavUser";
+import { getProfessionals, ProfessionalCard } from "./ProfessionalCard";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["200", "300", "400"],
 });
-
-const professionals = [
-  {
-    name: "Freight Dispatcher",
-    field: "Logistics",
-    price: 30,
-    topics: ["load boards", "broker communication"],
-  },
-  {
-    name: "Title & Escrow Officer",
-    field: "Real Estate",
-    price: 40,
-    topics: ["closing workflows", "title issues", "documents"],
-  },
-  {
-    name: "Restaurant Operator",
-    field: "Hospitality",
-    price: 25,
-    topics: ["staffing", "kitchen ops", "margins"],
-  },
-  {
-    name: "Property Manager",
-    field: "Real Estate",
-    price: 35,
-    topics: ["maintenance", "leasing", "tenant workflows"],
-  },
-  {
-    name: "Insurance Underwriter",
-    field: "Insurance",
-    price: 45,
-    topics: ["risk assessment", "policy pricing", "claims"],
-  },
-];
 
 const faqs = [
   {
@@ -64,7 +32,8 @@ const faqs = [
   },
 ];
 
-export default function Page() {
+export default async function Page() {
+  const featuredPros = (await getProfessionals()).slice(0, 5);
   return (
     <main>
       <section className="relative bg-black text-white bg-cover bg-[center_5%]" style={{ backgroundImage: "url('/pexels-kelly-37143582.jpg')" }}>
@@ -144,41 +113,8 @@ export default function Page() {
           </Link>
         </div>
         <div className="px-18 grid grid-cols-5 gap-5">
-          {professionals.map((p) => (
-            <div
-              key={p.name}
-              className="bg-white rounded-sm border border-zinc-200 p-5 flex flex-col gap-4"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-start gap-3">
-                  <div className="w-12 h-12 rounded-full bg-zinc-300" />
-                  <div>
-                    <div className={`${jakarta.className} font-medium text-md tracking-tight`}>{p.name}</div>
-                    <div className="text-xs text-zinc-500 tracking-tight">{p.field}</div>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="font-medium text-md">${p.price}</div>
-                  <div className="text-xs text-zinc-500">/ 30 min</div>
-                </div>
-              </div>
-              <div>
-                <div className="text-xs text-zinc-500 mb-2">Topics:</div>
-                <div className="flex flex-wrap gap-1.5">
-                  {p.topics.map((t) => (
-                    <span
-                      key={t}
-                      className="bg-white border border-zinc-300 text-zinc-700 text-xs rounded-sm px-2.5 py-1"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <button className="border border-zinc-300 rounded-sm py-2 text-sm hover:bg-zinc-50">
-                View profile
-              </button>
-            </div>
+          {featuredPros.map((p) => (
+            <ProfessionalCard key={p.user_id} pro={p} />
           ))}
         </div>
       </section>
