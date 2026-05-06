@@ -132,7 +132,7 @@ export default async function BrowsePage({
     <main className="bg-white min-h-screen">
       <Nav />
 
-      <section className="px-18 pt-6 pb-4 text-center">
+      <section className="px-12 pt-6 pb-4 text-center">
         <h1 className={`${jakarta.className} text-3xl font-light tracking-tight`}>Browse professionals</h1>
         <form action="/browse" method="get" className="mt-4 max-w-5xl mx-auto">
           {selectedIndustry && (
@@ -160,8 +160,8 @@ export default async function BrowsePage({
         </form>
       </section>
 
-      <section className="px-18 pb-4">
-        <div className="max-w-[94rem] mx-auto flex justify-center gap-3 flex-wrap">
+      <section className="px-12 pb-4">
+        <div className="max-w-8xl mx-auto flex justify-center gap-3 flex-wrap">
           {industries.map((ind) => {
             const Icon = industryIcons[ind];
             const active = selectedIndustry === ind;
@@ -193,7 +193,7 @@ export default async function BrowsePage({
       </section>
 
       <div className="bg-white">
-        <div className="px-18 py-2 flex items-center justify-between">
+        <div className="px-12 py-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
             {filters.map((f) => (
               <button
@@ -215,12 +215,12 @@ export default async function BrowsePage({
         </div>
       </div>
 
-      <section className="px-18 py-4">
+      <section className="px-12 py-4">
         <div className="grid grid-cols-5 gap-5">
           {pros.map((p) => (
             <Link
               key={p.user_id}
-              href="#"
+              href={`/professionals/${p.user_id}`}
               className="bg-white rounded-lg border border-zinc-200 overflow-hidden flex flex-col hover:border-zinc-400 transition-colors"
             >
               <div className="aspect-square bg-zinc-300 overflow-hidden">

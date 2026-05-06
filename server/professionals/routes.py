@@ -39,6 +39,25 @@ VALID_INDUSTRIES = {
 VALID_DURATIONS = {'15', '30', '60'}
 
 
+@professionals_bp.route('/professionals/<user_id>', methods=['GET'])
+def get_professional(user_id):
+    """Returns a single professional by user id, joined with the user's name."""
+    if not supabase:
+        return jsonify({'message': 'Database connection not initialized'}), 500
+
+    response = supabase.table('professional_profiles').select(
+        'user_id, role, industry, bio, pricing, photo_url, linkedin_url, users(name)'
+    ).eq('user_id', user_id).maybe_single().execute()
+
+    if not response or not response.data:
+        return jsonify({'message': 'Professional not found'}), 404
+
+    row = response.data
+    user = row.pop('users', None) or {}
+    row['name'] = user.get('name')
+    return jsonify(row), 200
+
+
 @professionals_bp.route('/professionals', methods=['GET'])
 def list_professionals():
     """Returns every professional profile joined with the user's name."""

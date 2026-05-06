@@ -22,7 +22,7 @@ export function Nav() {
     pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <nav className="border-b border-zinc-200 bg-white px-18 py-3 flex items-center justify-between">
+    <nav className="border-b border-zinc-200 bg-white px-12 py-3 flex items-center justify-between">
       <div className="flex items-center gap-12">
         <Link
           href="/"
