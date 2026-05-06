@@ -170,7 +170,15 @@ export default async function BrowsePage() {
               href="#"
               className="bg-white rounded-lg border border-zinc-200 overflow-hidden flex flex-col hover:border-zinc-400 transition-colors"
             >
-              <div className="aspect-[4/3] bg-zinc-300" />
+              <div className="aspect-[4/3] bg-zinc-300 overflow-hidden">
+                {p.photo_url && (
+                  <img
+                    src={p.photo_url}
+                    alt={p.name}
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
               <div className="p-4 flex flex-col gap-3 flex-1">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex flex-col gap-1 min-w-0">

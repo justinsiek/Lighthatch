@@ -128,7 +128,16 @@ def me():
     if not supabase:
         return jsonify({'message': 'Database connection not initialized'}), 500
 
-    response = supabase.table('users').select('id, email, name').eq('id', g.current_user_id).maybe_single().execute()
+    response = supabase.table('users').select(
+        'id, email, name, professional_profiles(photo_url)'
+    ).eq('id', g.current_user_id).maybe_single().execute()
+
     if not response or not response.data:
         return jsonify({'message': 'User not found'}), 404
-    return jsonify(response.data), 200
+
+    row = response.data
+    profile = row.pop('professional_profiles', None)
+    if isinstance(profile, list):
+        profile = profile[0] if profile else None
+    row['photo_url'] = (profile or {}).get('photo_url')
+    return jsonify(row), 200

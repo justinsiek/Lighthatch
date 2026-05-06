@@ -46,7 +46,10 @@ type FormData = {
   linkedin_url: string;
   bio: string;
   pricing: PricingDraft;
+  photo_url: string | null;
 };
+
+const TOTAL_STEPS = 4;
 
 export default function BecomeProfessionalPage() {
   const router = useRouter();
@@ -58,9 +61,11 @@ export default function BecomeProfessionalPage() {
     linkedin_url: "",
     bio: "",
     pricing: { 30: "" },
+    photo_url: null,
   });
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [photoUploading, setPhotoUploading] = useState(false);
 
   useEffect(() => {
     fetch(`${API_URL}/api/me`, { credentials: "include" }).then((r) => {
@@ -92,6 +97,33 @@ export default function BecomeProfessionalPage() {
     }));
   }
 
+  async function handlePhotoSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setError(null);
+    setPhotoUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("photo", file);
+      const res = await fetch(`${API_URL}/api/professionals/photo`, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(body.message ?? "Photo upload failed");
+        return;
+      }
+      setData((cur) => ({ ...cur, photo_url: body.photo_url }));
+    } catch {
+      setError("Could not reach the server. Is it running?");
+    } finally {
+      setPhotoUploading(false);
+    }
+  }
+
   function canAdvance(): boolean {
     if (step === 1) return data.role.trim().length > 0 && data.industry !== "";
     if (step === 2) return data.bio.trim().length > 0 && data.bio.length <= 150;
@@ -99,10 +131,11 @@ export default function BecomeProfessionalPage() {
       const entries = Object.entries(data.pricing);
       return entries.length > 0 && entries.every(([, v]) => Number(v) > 0);
     }
+    if (step === 4) return true;
     return false;
   }
 
-  async function submit() {
+  async function submit(includePhoto: boolean = true) {
     setError(null);
     setSubmitting(true);
     try {
@@ -118,6 +151,7 @@ export default function BecomeProfessionalPage() {
             Object.entries(data.pricing).map(([d, v]) => [d, Math.round(Number(v) * 100)])
           ),
           linkedin_url: data.linkedin_url.trim() || null,
+          photo_url: includePhoto ? data.photo_url : null,
         }),
       });
       const body = await res.json().catch(() => ({}));
@@ -144,9 +178,9 @@ export default function BecomeProfessionalPage() {
 
       <div className="flex-1 flex items-start justify-center px-6 pt-24 pb-12">
         <div className="w-full max-w-lg">
-          <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">Step {step} of 3</div>
+          <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">Step {step} of {TOTAL_STEPS}</div>
           <div className="mt-3 flex items-center gap-2">
-            {[1, 2, 3].map((n) => (
+            {Array.from({ length: TOTAL_STEPS }, (_, i) => i + 1).map((n) => (
               <div key={n} className="h-1 flex-1 bg-zinc-200 rounded-sm overflow-hidden">
                 <div
                   className="h-full bg-black rounded-sm transition-[width] duration-500 ease-out"
@@ -291,6 +325,46 @@ export default function BecomeProfessionalPage() {
             </>
           )}
 
+          {step === 4 && (
+            <>
+              <h1 className={`${jakarta.className} mt-10 text-3xl font-light tracking-tight`}>
+                Add a photo
+              </h1>
+              <p className="mt-2 text-sm text-zinc-600">
+                Helps people put a face to your profile. Optional — you can skip and add one later.
+              </p>
+              <div className="mt-8 flex flex-col items-center gap-4">
+                {data.photo_url ? (
+                  <img
+                    src={data.photo_url}
+                    alt="Your headshot"
+                    className="w-40 h-40 rounded-full object-cover border border-zinc-200"
+                  />
+                ) : (
+                  <div className="w-40 h-40 rounded-full bg-zinc-100 border border-dashed border-zinc-300" />
+                )}
+                <label
+                  className={`text-sm cursor-pointer px-4 py-2 rounded-sm border border-zinc-300 hover:bg-zinc-50 ${
+                    photoUploading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
+                  {photoUploading
+                    ? "Uploading..."
+                    : data.photo_url
+                    ? "Change photo"
+                    : "Upload photo"}
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    onChange={handlePhotoSelect}
+                    disabled={photoUploading}
+                    className="hidden"
+                  />
+                </label>
+              </div>
+            </>
+          )}
+
           {error && <p className="mt-6 text-sm text-red-600">{error}</p>}
 
           <div className="mt-6 flex items-center justify-between">
@@ -308,7 +382,7 @@ export default function BecomeProfessionalPage() {
               </Link>
             )}
 
-            {step < 3 ? (
+            {step < TOTAL_STEPS ? (
               <button
                 type="button"
                 onClick={() => canAdvance() && setStep((s) => s + 1)}
@@ -318,14 +392,24 @@ export default function BecomeProfessionalPage() {
                 Continue
               </button>
             ) : (
-              <button
-                type="button"
-                onClick={submit}
-                disabled={!canAdvance() || submitting}
-                className="rounded-sm bg-black text-white px-6 py-2.5 text-sm font-medium hover:bg-zinc-800 disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                {submitting ? "Creating..." : "Create profile"}
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => submit(false)}
+                  disabled={submitting}
+                  className="rounded-sm border border-zinc-300 px-4 py-2.5 text-sm hover:bg-zinc-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  Skip
+                </button>
+                <button
+                  type="button"
+                  onClick={() => submit(true)}
+                  disabled={submitting || photoUploading}
+                  className="rounded-sm bg-black text-white px-6 py-2.5 text-sm font-medium hover:bg-zinc-800 disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  {submitting ? "Creating..." : "Create profile"}
+                </button>
+              </div>
             )}
           </div>
         </div>

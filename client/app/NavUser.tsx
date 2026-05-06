@@ -3,11 +3,16 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { User } from "lucide-react";
+import { User as UserIcon } from "lucide-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
 
-type User = { id: string; email: string; name: string };
+type User = {
+  id: string;
+  email: string;
+  name: string;
+  photo_url: string | null;
+};
 
 export function NavUser({ variant = "light" }: { variant?: "light" | "dark" }) {
   const router = useRouter();
@@ -74,9 +79,17 @@ export function NavUser({ variant = "light" }: { variant?: "light" | "dark" }) {
         onClick={() => setOpen((o) => !o)}
         className="cursor-pointer"
       >
-        <div className="w-12 h-12 rounded-full bg-white border border-zinc-300 flex items-center justify-center text-zinc-500">
-          <User className="w-6 h-6" strokeWidth={1.75} />
-        </div>
+        {user.photo_url ? (
+          <img
+            src={user.photo_url}
+            alt={user.name}
+            className="w-12 h-12 rounded-full object-cover border border-zinc-300"
+          />
+        ) : (
+          <div className="w-12 h-12 rounded-full bg-white border border-zinc-300 flex items-center justify-center text-zinc-500">
+            <UserIcon className="w-6 h-6" strokeWidth={1.75} />
+          </div>
+        )}
       </button>
       {open && (
         <>
