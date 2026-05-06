@@ -71,9 +71,9 @@ export default function Page() {
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
         <nav className="relative flex items-center justify-between px-18 py-6">
           <div className={`${jakarta.className} text-2xl font-light tracking-tighter`}>Lighthatch</div>
-          <div className="flex items-center gap-10 text-md text-zinc-300 text-sm">
-            <Link href="/browse" className="hover:text-white">Browse</Link>
-            <Link href="/professionals" className="hover:text-white">Become A Professional</Link>
+          <div className="flex items-center gap-10 text-md text-zinc-300">
+            <Link href="/browse" className="font-light hover:text-white">Browse</Link>
+            <Link href="/professionals" className="font-light hover:text-white">Become A Professional</Link>
           </div>
           <NavUser variant="dark" />
         </nav>
@@ -94,7 +94,7 @@ export default function Page() {
             </Link>
             <Link
               href="/professionals"
-              className="rounded-sm border border-white px-6 py-3 font-sm text-white hover:bg-white/10"
+              className="rounded-sm border border-white px-6 py-3 font-sm text-white  hover:bg-white/10"
             >
               Become a Professional
             </Link>
@@ -200,13 +200,13 @@ export default function Page() {
           <div className="mt-8 flex gap-3 justify-center">
             <Link
               href="/browse"
-              className="rounded-sm bg-white px-6 py-3 font-sm text-black hover:bg-zinc-100"
+              className="rounded-sm bg-white px-6 py-3 font-light text-black hover:bg-zinc-100"
             >
               Browse Professionals
             </Link>
             <Link
               href="/professionals"
-              className="rounded-sm border border-white px-6 py-3 font-sm text-white hover:bg-white/10"
+              className="rounded-sm border border-white px-6 py-3 font-light text-white hover:bg-white/10"
             >
               Become a Professional
             </Link>

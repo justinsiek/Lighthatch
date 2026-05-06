@@ -12,6 +12,19 @@ VALID_INDUSTRIES = {
     'Insurance',
     'Construction',
     'Home Services',
+    'Healthcare',
+    'Manufacturing',
+    'Retail',
+    'Finance',
+    'Accounting',
+    'Legal',
+    'Education',
+    'Marketing',
+    'Software',
+    'Beauty & Wellness',
+    'Automotive',
+    'Agriculture',
+    'Nonprofit',
 }
 VALID_DURATIONS = {'15', '30', '60'}
 

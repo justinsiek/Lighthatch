@@ -7,11 +7,24 @@ import {
   ShieldCheck,
   HardHat,
   Wrench,
+  Stethoscope,
+  Factory,
+  ShoppingBag,
+  Landmark,
+  Calculator,
+  Scale,
+  GraduationCap,
+  Megaphone,
+  Terminal,
+  Sparkles,
+  Car,
+  Sprout,
+  HandHeart,
   Search,
   ChevronDown,
   BadgeCheck,
 } from "lucide-react";
-import { NavUser } from "../NavUser";
+import { Nav } from "../Nav";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
 
@@ -53,6 +66,19 @@ const industries = [
   "Insurance",
   "Construction",
   "Home Services",
+  "Healthcare",
+  "Manufacturing",
+  "Retail",
+  "Finance",
+  "Accounting",
+  "Legal",
+  "Education",
+  "Marketing",
+  "Software",
+  "Beauty & Wellness",
+  "Automotive",
+  "Agriculture",
+  "Nonprofit",
 ];
 
 const filters = ["Price", "Rating", "Availability", "Duration"];
@@ -64,27 +90,30 @@ const industryIcons: Record<string, React.ReactNode> = {
   Insurance: <ShieldCheck className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
   Construction: <HardHat className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
   "Home Services": <Wrench className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
+  Healthcare: <Stethoscope className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
+  Manufacturing: <Factory className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
+  Retail: <ShoppingBag className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
+  Finance: <Landmark className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
+  Accounting: <Calculator className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
+  Legal: <Scale className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
+  Education: <GraduationCap className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
+  Marketing: <Megaphone className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
+  Software: <Terminal className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
+  "Beauty & Wellness": <Sparkles className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
+  Automotive: <Car className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
+  Agriculture: <Sprout className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
+  Nonprofit: <HandHeart className="w-5 h-5 text-zinc-700" strokeWidth={1.75} />,
 };
 
 export default async function BrowsePage() {
   const pros = await getProfessionals();
   return (
     <main className="bg-white min-h-screen">
-      <nav className="border-b border-zinc-200 bg-white px-18 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-12">
-          <Link href="/" className={`${jakarta.className} text-2xl font-light tracking-tighter`}>Lighthatch</Link>
-          <div className="flex items-center gap-8">
-            <Link href="/browse" className="font-medium">Browse</Link>
-            <Link href="/bookings" className="font-medium text-zinc-600 hover:text-black">Bookings</Link>
-            <Link href="/professionals" className="text-zinc-600 hover:text-black">Become A Professional</Link>
-          </div>
-        </div>
-        <NavUser />
-      </nav>
+      <Nav />
 
-      <section className="px-18 pt-6 pb-6 text-center">
+      <section className="px-18 pt-6 pb-4 text-center">
         <h1 className={`${jakarta.className} text-3xl font-light tracking-tight`}>Browse professionals</h1>
-        <div className="mt-4 max-w-3xl mx-auto">
+        <div className="mt-4 max-w-5xl mx-auto">
           <div className="bg-white rounded-sm border border-zinc-200 flex items-center px-5 py-4">
             <Search className="w-5 h-5 text-zinc-400" strokeWidth={1.75} />
             <input
@@ -96,12 +125,12 @@ export default async function BrowsePage() {
         </div>
       </section>
 
-      <section className="px-18 pb-6">
-        <div className="flex justify-center gap-3 flex-wrap">
+      <section className="px-18 pb-4">
+        <div className="max-w-[94rem] mx-auto flex justify-center gap-3 flex-wrap">
           {industries.map((ind) => (
             <button
               key={ind}
-              className="border border-zinc-200 rounded-sm bg-white px-5 py-2 flex items-center gap-2.5 hover:border-zinc-400 cursor-pointer"
+              className="border border-zinc-200 rounded-sm bg-white px-4 py-2 flex items-center gap-2.5 hover:border-zinc-400 cursor-pointer"
             >
               {industryIcons[ind]}
               <span className="text-sm">{ind}</span>
@@ -111,7 +140,7 @@ export default async function BrowsePage() {
       </section>
 
       <div className="bg-white">
-        <div className="px-18 py-3 flex items-center justify-between">
+        <div className="px-18 py-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
             {filters.map((f) => (
               <button

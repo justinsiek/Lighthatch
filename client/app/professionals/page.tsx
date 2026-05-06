@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import { NavUser } from "../NavUser";
+import { Nav } from "../Nav";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -20,6 +20,19 @@ const INDUSTRIES = [
   "Insurance",
   "Construction",
   "Home Services",
+  "Healthcare",
+  "Manufacturing",
+  "Retail",
+  "Finance",
+  "Accounting",
+  "Legal",
+  "Education",
+  "Marketing",
+  "Software",
+  "Beauty & Wellness",
+  "Automotive",
+  "Agriculture",
+  "Nonprofit",
 ];
 
 const DURATION_OPTIONS = [15, 30, 60] as const;
@@ -127,18 +140,7 @@ export default function BecomeProfessionalPage() {
 
   return (
     <main className="bg-white min-h-screen flex flex-col">
-      <nav className="border-b border-zinc-200 bg-white px-18 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-12">
-          <Link href="/" className={`${jakarta.className} text-2xl font-light tracking-tighter`}>
-            Lighthatch
-          </Link>
-          <div className="flex items-center gap-8 text-sm">
-            <Link href="/browse" className="text-zinc-600 hover:text-black">Browse</Link>
-            <Link href="/professionals" className="font-medium">Become A Professional</Link>
-          </div>
-        </div>
-        <NavUser />
-      </nav>
+      <Nav />
 
       <div className="flex-1 flex items-start justify-center px-6 pt-24 pb-12">
         <div className="w-full max-w-lg">
@@ -260,16 +262,24 @@ export default function BecomeProfessionalPage() {
                         {d} min
                       </button>
                       {selected ? (
-                        <div className="relative flex-1">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">$</span>
-                          <input
-                            type="number"
-                            min="1"
-                            placeholder="Amount"
-                            value={data.pricing[d] ?? ""}
-                            onChange={(e) => updatePrice(d, e.target.value)}
-                            className="w-full border border-zinc-300 rounded-sm pl-7 pr-3 py-2.5 text-sm outline-none focus:border-zinc-500"
-                          />
+                        <div className="flex-1">
+                          <div className="relative">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">$</span>
+                            <input
+                              type="number"
+                              min="1"
+                              placeholder="Amount"
+                              value={data.pricing[d] ?? ""}
+                              onChange={(e) => updatePrice(d, e.target.value)}
+                              className="w-full border border-zinc-300 rounded-sm pl-7 pr-3 py-2.5 text-sm outline-none focus:border-zinc-500"
+                            />
+                          </div>
+                          {Number(data.pricing[d]) > 0 && (
+                            <div className="mt-1 text-xs text-zinc-500">
+                              You&apos;ll receive ${(Number(data.pricing[d]) * 0.9).toFixed(2)} per call
+                              {" "}after Lighthatch&apos;s 10% fee.
+                            </div>
+                          )}
                         </div>
                       ) : (
                         <div className="flex-1 text-xs text-zinc-400">Not offered</div>
